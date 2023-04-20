@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Howest.MagicCards.WebAPI", "Howest.Magic.WebAPI\Howest.MagicCards.WebAPI.csproj", "{B096C2E0-7261-42E9-95BF-9B06764E870C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Howest.MagicCards.DAL", "Howest.Magic.DAL\Howest.MagicCards.DAL.csproj", "{A0833A07-320D-4124-8410-C0954C9E99D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{6E25D20E-8C10-485B-A1F3-69BD56805209}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web API", "Web API", "{6D368BFA-5FAE-415F-BC2D-DFCB60877B27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web Application", "Web Application", "{AF5F59A0-76E6-4C33-9330-08AFFFDCACEF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Howest.MagicCards.GraphQL", "Howest.MagicCards.GraphQL\Howest.MagicCards.GraphQL.csproj", "{3DA3200D-AD52-4404-A27A-955FB5B12750}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Howest.MagicCards.Shared", "Howest.MagicCards.Shared\Howest.MagicCards.Shared.csproj", "{42DEF710-10C4-4CFB-A84E-EB41FFB0DEA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Howest.MagicCards.Web", "Howest.MagicCards.Web\Howest.MagicCards.Web.csproj", "{608AC155-6FF8-427D-9BCF-F73D121CD33A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howest.MagicCards.MinimalAPI", "Howest.MagicCards.MinimalAPI\Howest.MagicCards.MinimalAPI.csproj", "{9DFA170D-ED39-4F08-AA37-BC5DFC84E298}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B096C2E0-7261-42E9-95BF-9B06764E870C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B096C2E0-7261-42E9-95BF-9B06764E870C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B096C2E0-7261-42E9-95BF-9B06764E870C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B096C2E0-7261-42E9-95BF-9B06764E870C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0833A07-320D-4124-8410-C0954C9E99D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0833A07-320D-4124-8410-C0954C9E99D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0833A07-320D-4124-8410-C0954C9E99D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0833A07-320D-4124-8410-C0954C9E99D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA3200D-AD52-4404-A27A-955FB5B12750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA3200D-AD52-4404-A27A-955FB5B12750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA3200D-AD52-4404-A27A-955FB5B12750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA3200D-AD52-4404-A27A-955FB5B12750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42DEF710-10C4-4CFB-A84E-EB41FFB0DEA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42DEF710-10C4-4CFB-A84E-EB41FFB0DEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42DEF710-10C4-4CFB-A84E-EB41FFB0DEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42DEF710-10C4-4CFB-A84E-EB41FFB0DEA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{608AC155-6FF8-427D-9BCF-F73D121CD33A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{608AC155-6FF8-427D-9BCF-F73D121CD33A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{608AC155-6FF8-427D-9BCF-F73D121CD33A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{608AC155-6FF8-427D-9BCF-F73D121CD33A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DFA170D-ED39-4F08-AA37-BC5DFC84E298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DFA170D-ED39-4F08-AA37-BC5DFC84E298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DFA170D-ED39-4F08-AA37-BC5DFC84E298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DFA170D-ED39-4F08-AA37-BC5DFC84E298}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B096C2E0-7261-42E9-95BF-9B06764E870C} = {6D368BFA-5FAE-415F-BC2D-DFCB60877B27}
+		{A0833A07-320D-4124-8410-C0954C9E99D6} = {6E25D20E-8C10-485B-A1F3-69BD56805209}
+		{3DA3200D-AD52-4404-A27A-955FB5B12750} = {6D368BFA-5FAE-415F-BC2D-DFCB60877B27}
+		{42DEF710-10C4-4CFB-A84E-EB41FFB0DEA9} = {6E25D20E-8C10-485B-A1F3-69BD56805209}
+		{608AC155-6FF8-427D-9BCF-F73D121CD33A} = {AF5F59A0-76E6-4C33-9330-08AFFFDCACEF}
+		{9DFA170D-ED39-4F08-AA37-BC5DFC84E298} = {6D368BFA-5FAE-415F-BC2D-DFCB60877B27}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32ED5EE7-4D3C-4B3A-BBAA-F12997952615}
+	EndGlobalSection
+EndGlobal
