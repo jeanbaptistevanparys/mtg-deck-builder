@@ -3,9 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>91b18af2-4683-4e2b-a8b3-03911e48341c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Models\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 
