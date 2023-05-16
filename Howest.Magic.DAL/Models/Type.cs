@@ -4,12 +4,14 @@ public partial class Type
 {
     public Type()
     {
-        CardTypes = new HashSet<CardType>();
+        CardType = new HashSet<CardType>();
     }
+    
+    public string Id { get; set; }
     
     public string Name { get; set; }
     public string type { get; set; }
     
-    public virtual ICollection<CardType> CardTypes { get; set; }
+    public virtual ICollection<CardType> CardType { get; set; }
     
 }

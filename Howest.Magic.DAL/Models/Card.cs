@@ -14,11 +14,17 @@ public partial class Card
     public string? ManaCost { get; set; }
     public string ConvertedManaCost { get; set; }
     public string Type { get; set; }
-    public Rarity? RarityCode { get; set; }
-    public Set SetCode { get; set; }
+    
+    public string? RarityCode { get; set; }
+    public Rarity? Rarity { get; set; }
+    
+    public int SetCode { get; set; }
+    public Set Set { get; set; }
     public string? Text { get; set; }
     public string? Flavor { get; set; }
-    public Artist Artist { get; set; }
+    
+    public int? ArtistId { get; set; }
+   
     public string Number { get; set; }
     public string? Power { get; set; }
     public string? Toughness { get; set; }
@@ -31,6 +37,7 @@ public partial class Card
     public string MtgId { get; set; }
     public string? Variations { get; set; }
     
+    public Artist Artist { get; set; }
     public virtual ICollection<CardColor> CardColors { get; set; }
     public virtual ICollection<CardType> CardTypes { get; set; }
 }
