@@ -1,7 +1,11 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Howest.MagicCards.DAL.Models;
 using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.Shared.DTO;
+using Howest.MagicCards.Shared.Extensions;
+using Howest.MagicCards.Shared.Filters;
+using Howest.MagicCards.WebAPI.Wrappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Howest.MagicCards.WebAPI.Controllers;
@@ -22,8 +26,21 @@ public class CardsController : ControllerBase
 
 
     [HttpGet()]
-    public ActionResult<IEnumerable<CardReadDTO>> GetCards()
+    public ActionResult<IEnumerable<CardReadDTO>> GetCards([FromQuery] CardFilter filter, [FromServices] IConfiguration config)
     {
-        return Ok(_cardRepo.getAllCards().ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider));
+        filter.MaxPageSize = int.Parse(config["maxPageSize"]);
+        
+        return (_cardRepo.getAllCards() is IQueryable<card> allCards)
+            ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
+                allCards
+                    .ToPagedList(filter.PageNumber, filter.PageSize)
+                    .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
+                    .ToList(),
+                filter.PageNumber, filter.PageSize))
+        : NotFound(new Response<CardReadDTO>()
+        {
+            Errors = new string[] { "404" },
+            Message = "No cards found "
+        });
     }
-}
+} 

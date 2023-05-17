@@ -25,10 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Wrappers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Howest.MagicCards.Shared\Howest.MagicCards.Shared.csproj" />
   </ItemGroup>
 

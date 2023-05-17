@@ -17,7 +17,6 @@ public class SqlCardRepository : ICardRepository
     public IQueryable<card> getAllCards()
     {
         IQueryable<card> allCards = _db.cards
-            .Take(10)
             .Select(b => b);
         return allCards;
     }
