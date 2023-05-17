@@ -52,11 +52,11 @@ public class CardsController : ControllerBase
     [ApiVersion("1.1")]
     [HttpGet("{id:long}", Name = "GetCardById")]
     
-    public ActionResult<CardReadDTO> GetCardById(long id)
+    public ActionResult<CardReadDetailDTO> GetCardById(long id)
     {
         return (_cardRepo.getCardById(id) is { } card)
-            ? Ok(_mapper.Map<CardReadDTO>(card))
-            : NotFound(new Response<CardReadDTO>()
+            ? Ok(_mapper.Map<CardReadDetailDTO>(card))
+            : NotFound(new Response<CardReadDetailDTO>()
             {
                 Errors = new string[] { "404" },
                 Message = "No card found with id " + id

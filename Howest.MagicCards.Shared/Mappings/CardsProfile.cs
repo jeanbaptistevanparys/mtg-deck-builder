@@ -9,5 +9,6 @@ public class CardsProfile : Profile
     public CardsProfile()
     {
         CreateMap<card, CardReadDTO>();
+        CreateMap<card, CardReadDetailDTO>();
     }
 }

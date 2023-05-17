@@ -17,7 +17,7 @@ public class CardReadDTO
     // public string Toughness { get; init; }
     // public string Layout { get; init; }
     // public string MultiverseId { get; init; }
-    // public string OriginalImageUrl { get; init; }
+    public string Original_Image_Url { get; init; }
     // public string Image { get; init; }
     // public string OriginalText { get; init; }
     // public string OriginalType { get; init; }
