@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Howest.MagicCards.DAL.Models;
@@ -10,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Howest.MagicCards.WebAPI.Controllers;
 
+[ApiVersion("1.1")]
+[ApiVersion("1.5")]
 [ApiController]
 [Route("api/[controller]")]
 public class CardsController : ControllerBase 
@@ -30,9 +33,10 @@ public class CardsController : ControllerBase
     {
         filter.MaxPageSize = int.Parse(config["maxPageSize"]);
         
-        return (_cardRepo.getAllCards() is IQueryable<card> allCards)
+        return (_cardRepo.getAllCards() is { } allCards)
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
+                    .ToFilteredList(filter.Set, filter.Artist, filter.Rarity, filter.CardType, filter.CardName, filter.CardText)
                     .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
                     .ToList(),

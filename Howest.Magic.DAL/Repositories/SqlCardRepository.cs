@@ -17,6 +17,7 @@ public class SqlCardRepository : ICardRepository
     public IQueryable<card> getAllCards()
     {
         IQueryable<card> allCards = _db.cards
+            .OrderBy( c => c.id)
             .Select(b => b);
         return allCards;
     }

@@ -9,6 +9,4 @@ public static class EntityExtensions
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize);
     }
-
-
 }
