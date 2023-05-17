@@ -21,4 +21,12 @@ public class SqlCardRepository : ICardRepository
             .Select(b => b);
         return allCards;
     }
+    
+    public card? getCardById(long id)
+    {
+        card? singleCard = _db.cards
+            .SingleOrDefault(c => c.id == id);
+
+        return singleCard;
+    }
 }

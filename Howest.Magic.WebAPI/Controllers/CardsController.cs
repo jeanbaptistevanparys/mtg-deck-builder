@@ -28,6 +28,7 @@ public class CardsController : ControllerBase
     }
 
 
+    [ApiVersion("1.5")]
     [HttpGet()]
     public ActionResult<IEnumerable<CardReadDTO>> GetCards([FromQuery] CardFilter filter, [FromServices] IConfiguration config)
     {
@@ -46,5 +47,19 @@ public class CardsController : ControllerBase
             Errors = new string[] { "404" },
             Message = "No cards found "
         });
+    }
+    
+    [ApiVersion("1.1")]
+    [HttpGet("{id:long}", Name = "GetCardById")]
+    
+    public ActionResult<CardReadDTO> GetCardById(long id)
+    {
+        return (_cardRepo.getCardById(id) is { } card)
+            ? Ok(_mapper.Map<CardReadDTO>(card))
+            : NotFound(new Response<CardReadDTO>()
+            {
+                Errors = new string[] { "404" },
+                Message = "No card found with id " + id
+            });
     }
 } 
