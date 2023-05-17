@@ -17,4 +17,11 @@ public static class CardExtensions
                      c.text.Contains(cardText)
             );
     }
+    
+    public static IQueryable<card> ToSortedList(this IQueryable<card> entities, bool? ascending)
+    {
+        return ascending == true
+            ? entities.OrderBy(c => c.name)
+            : entities.OrderByDescending(c => c.name);
+    }
 }

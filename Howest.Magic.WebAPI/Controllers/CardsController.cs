@@ -27,18 +27,16 @@ public class CardsController : ControllerBase
         _mapper = mapper;
     }
 
-
-    [ApiVersion("1.5")]
-    [HttpGet()]
-    public ActionResult<IEnumerable<CardReadDTO>> GetCards([FromQuery] CardFilter filter, [FromServices] IConfiguration config)
+    
+    [HttpGet(), MapToApiVersion("1.1")]
+    public ActionResult<IEnumerable<CardReadDTO>> GetCards(PaginationFilter filter,[FromServices] IConfiguration config)
     {
+        
         filter.MaxPageSize = int.Parse(config["maxPageSize"]);
         
         return (_cardRepo.getAllCards() is { } allCards)
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
-                    .ToFilteredList(filter.Set, filter.Artist, filter.Rarity, filter.CardType, filter.CardName, filter.CardText)
-                    .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
                     .ToList(),
                 filter.PageNumber, filter.PageSize))
@@ -49,9 +47,30 @@ public class CardsController : ControllerBase
         });
     }
     
-    [ApiVersion("1.1")]
-    [HttpGet("{id:long}", Name = "GetCardById")]
+    [HttpGet(), MapToApiVersion("1.5")]
+    public ActionResult<IEnumerable<CardReadDTO>> GetCards([FromQuery] CardFilter filter, [FromServices] IConfiguration config)
+    {
+        filter.MaxPageSize = int.Parse(config["maxPageSize"]);
+        
+        return (_cardRepo.getAllCards() is { } allCards)
+            ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
+                allCards
+                    .ToFilteredList(filter.Set, filter.Artist, filter.Rarity, filter.CardType, filter.CardName, filter.CardText)
+                    .ToPagedList(filter.PageNumber, filter.PageSize)
+                    .ToSortedList(filter.Ascending)
+                    .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
+                    .ToList(),
+                filter.PageNumber, filter.PageSize))
+            : NotFound(new Response<CardReadDTO>()
+            {
+                Errors = new string[] { "404" },
+                Message = "No cards found "
+            });
+    }
     
+    
+    
+    [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.5")]
     public ActionResult<CardReadDetailDTO> GetCardById(long id)
     {
         return (_cardRepo.getCardById(id) is { } card)
