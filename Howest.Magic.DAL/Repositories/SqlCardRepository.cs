@@ -15,22 +15,13 @@ public class SqlCardRepository : ICardRepository
         _db = myDbContext;
     }
     
-    public IQueryable<card> GetAllCards()
+    public async Task<IQueryable<card>> GetAllCards()
     {
         IQueryable<card> allCards = _db.cards
             .OrderBy( c => c.id)
             .Select(b => b);
-        return allCards;
+        return await Task.FromResult(allCards) ;
     }
-    
-    public card? GetCardById(long id)
-    {
-        card? singleCard = _db.cards
-            .SingleOrDefault(c => c.id == id);
-
-        return singleCard;
-    }
-    
     public Task<card> GetCardByIdAsync(long id)
     {
         return _db.cards

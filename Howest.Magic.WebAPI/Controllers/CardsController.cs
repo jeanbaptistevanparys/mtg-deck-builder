@@ -1,7 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Howest.MagicCards.DAL.Models;
 using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.Shared.DTO;
 using Howest.MagicCards.Shared.Extensions;
@@ -29,10 +27,10 @@ public class CardsController : ControllerBase
 
 
     [HttpGet(), MapToApiVersion("1.1")]
-    public ActionResult<IEnumerable<CardReadDTO>> GetCards([FromQuery] PaginationFilter filter)
+    public async Task<ActionResult<IEnumerable<CardReadDTO>>> GetCards([FromQuery] CardFilter filter)
     {
         
-        return (_cardRepo.GetAllCards() is { } allCards)
+        return (await _cardRepo.GetAllCards() is { } allCards)
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
                     .ToPagedList(filter.PageNumber, filter.PageSize)
@@ -48,15 +46,15 @@ public class CardsController : ControllerBase
     }
     
     [HttpGet(), MapToApiVersion("1.5")]
-    public ActionResult<IEnumerable<CardReadDTO>> GetCards([FromQuery] CardFilter filter, [FromServices] IConfiguration config)
+    public async Task<ActionResult<CardReadDTO>> GetCards([FromQuery] CardOrderFilter filter, [FromServices] IConfiguration config)
     {
         filter.MaxPageSize = int.Parse(config["maxPageSize"]);
         
-        return (_cardRepo.GetAllCards() is { } allCards)
+        return (await _cardRepo.GetAllCards() is { } allCards)
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
                     .ToFilteredList(filter.Set, filter.Artist, filter.Rarity, filter.CardType, filter.CardName, filter.CardText)
-                    .ToSortedList(filter.Ascending)
+                    .Sort(filter.orderByQueryString)
                     .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
                     .ToList(),
@@ -71,9 +69,9 @@ public class CardsController : ControllerBase
     
     
     [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.1")]
-    public ActionResult<CardReadDTO> GetCardbyId(long id)
+    public async Task<ActionResult<CardReadDTO>>  GetCardbyId(long id)
     {
-        return (_cardRepo.GetCardById(id) is { } card)
+        return (await _cardRepo.GetCardByIdAsync(id) is { } card)
             ? Ok(_mapper.Map<CardReadDTO>(card))
             : NotFound(new Response<CardReadDTO>()
             {
