@@ -9,5 +9,4 @@ public class CardFilter : PaginationFilter
     public string CardName { get; set; } = string.Empty;
     public string CardText { get; set; } = string.Empty;
     
-    public bool? Ascending { get; set; } = true;
 }
