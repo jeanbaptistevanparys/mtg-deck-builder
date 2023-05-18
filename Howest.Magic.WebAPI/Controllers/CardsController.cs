@@ -27,24 +27,24 @@ public class CardsController : ControllerBase
         _mapper = mapper;
     }
 
-    
+
     [HttpGet(), MapToApiVersion("1.1")]
-    public ActionResult<IEnumerable<CardReadDTO>> GetCards(PaginationFilter filter,[FromServices] IConfiguration config)
+    public ActionResult<IEnumerable<CardReadDTO>> GetCards([FromQuery] PaginationFilter filter)
     {
         
-        filter.MaxPageSize = int.Parse(config["maxPageSize"]);
-        
-        return (_cardRepo.getAllCards() is { } allCards)
+        return (_cardRepo.GetAllCards() is { } allCards)
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
+                    .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
                     .ToList(),
-                filter.PageNumber, filter.PageSize))
-        : NotFound(new Response<CardReadDTO>()
-        {
-            Errors = new string[] { "404" },
-            Message = "No cards found "
-        });
+                filter.PageNumber, filter.PageSize, allCards.Count()))
+            : NotFound(new Response<CardReadDTO>()
+            {
+                Errors = new string[] { "404" },
+                Message = "No cards found "
+            });
+
     }
     
     [HttpGet(), MapToApiVersion("1.5")]
@@ -52,15 +52,15 @@ public class CardsController : ControllerBase
     {
         filter.MaxPageSize = int.Parse(config["maxPageSize"]);
         
-        return (_cardRepo.getAllCards() is { } allCards)
+        return (_cardRepo.GetAllCards() is { } allCards)
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
                     .ToFilteredList(filter.Set, filter.Artist, filter.Rarity, filter.CardType, filter.CardName, filter.CardText)
-                    .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ToSortedList(filter.Ascending)
+                    .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
                     .ToList(),
-                filter.PageNumber, filter.PageSize))
+                filter.PageNumber, filter.PageSize, allCards.Count()))
             : NotFound(new Response<CardReadDTO>()
             {
                 Errors = new string[] { "404" },
@@ -70,10 +70,22 @@ public class CardsController : ControllerBase
     
     
     
-    [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.5")]
-    public ActionResult<CardReadDetailDTO> GetCardById(long id)
+    [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.1")]
+    public ActionResult<CardReadDTO> GetCardbyId(long id)
     {
-        return (_cardRepo.getCardById(id) is { } card)
+        return (_cardRepo.GetCardById(id) is { } card)
+            ? Ok(_mapper.Map<CardReadDTO>(card))
+            : NotFound(new Response<CardReadDTO>()
+            {
+                Errors = new string[] { "404" },
+                Message = "No card found with id " + id
+            });
+    }
+    
+    [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.5")]
+    public async Task<ActionResult<CardReadDTO>> GetCardById(long id)
+    {
+        return (await _cardRepo.GetCardByIdAsync(id) is { } card)
             ? Ok(_mapper.Map<CardReadDetailDTO>(card))
             : NotFound(new Response<CardReadDetailDTO>()
             {

@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>
@@ -41,14 +40,13 @@ builder.Services
 
 builder.Services.AddAutoMapper(typeof(CardsProfile));
 
-builder.Services.AddApiVersioning(o => {
+builder.Services.AddApiVersioning(o =>
+{
     o.ReportApiVersions = true;
     o.AssumeDefaultVersionWhenUnspecified = true;
     o.DefaultApiVersion = new ApiVersion(1, 0);
     o.ApiVersionReader = ApiVersionReader.Combine(
-        new QueryStringApiVersionReader("version"),
-        new HeaderApiVersionReader("api-version"),
-        new MediaTypeApiVersionReader("v"));
+        new QueryStringApiVersionReader("version"));
 });
 
 builder.Services.AddVersionedApiExplorer(

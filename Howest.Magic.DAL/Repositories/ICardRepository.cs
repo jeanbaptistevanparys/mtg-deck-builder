@@ -4,6 +4,7 @@ namespace Howest.MagicCards.DAL.Repositories;
 
 public interface ICardRepository
 {
-    IQueryable<card> getAllCards();
-    card? getCardById(long id);
+    IQueryable<card> GetAllCards();
+    card GetCardById(long id);
+    Task<card> GetCardByIdAsync(long id);
 }
