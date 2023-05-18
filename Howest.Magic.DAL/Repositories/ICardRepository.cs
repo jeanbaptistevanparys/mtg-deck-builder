@@ -1,4 +1,5 @@
 using Howest.MagicCards.DAL.Models;
+using Howest.MagicCards.DAL.Models.sql;
 
 namespace Howest.MagicCards.DAL.Repositories;
 
