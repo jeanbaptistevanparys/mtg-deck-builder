@@ -1,5 +1,6 @@
 
 using Howest.MagicCards.DAL.Models;
+using Howest.MagicCards.DAL.Models.sql;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 

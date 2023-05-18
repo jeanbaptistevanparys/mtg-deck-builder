@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#nullable disable
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
-namespace Howest.MagicCards.DAL.Models
+namespace Howest.MagicCards.DAL.Models.sql
 {
     [Index(nameof(token), Name = "personal_access_tokens_token_unique", IsUnique = true)]
     [Index(nameof(tokenable_type), nameof(tokenable_id), Name = "personal_access_tokens_tokenable_type_tokenable_id_index")]

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#nullable disable
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
-namespace Howest.MagicCards.DAL.Models
+namespace Howest.MagicCards.DAL.Models.sql
 {
     public partial class card
     {

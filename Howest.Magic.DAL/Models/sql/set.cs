@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#nullable disable
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
-namespace Howest.MagicCards.DAL.Models
+namespace Howest.MagicCards.DAL.Models.sql
 {
-    public partial class color
+    [Index(nameof(code), Name = "sets_code_unique", IsUnique = true)]
+    public partial class set
     {
-        public color()
+        public set()
         {
-            card_colors = new HashSet<card_color>();
+            cards = new HashSet<card>();
         }
 
         [Key]
@@ -28,7 +27,6 @@ namespace Howest.MagicCards.DAL.Models
         [Column(TypeName = "datetime")]
         public DateTime? updated_at { get; set; }
 
-        [InverseProperty(nameof(card_color.color))]
-        public virtual ICollection<card_color> card_colors { get; set; }
+        public virtual ICollection<card> cards { get; set; }
     }
 }

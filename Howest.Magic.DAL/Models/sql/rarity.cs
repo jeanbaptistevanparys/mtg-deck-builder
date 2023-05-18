@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#nullable disable
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
-namespace Howest.MagicCards.DAL.Models
+namespace Howest.MagicCards.DAL.Models.sql
 {
-    public partial class artist
+    [Index(nameof(code), Name = "rarities_code_unique", IsUnique = true)]
+    public partial class rarity
     {
-        public artist()
+        public rarity()
         {
             cards = new HashSet<card>();
         }
@@ -19,13 +18,15 @@ namespace Howest.MagicCards.DAL.Models
         public long id { get; set; }
         [Required]
         [StringLength(255)]
-        public string full_name { get; set; }
+        public string code { get; set; }
+        [Required]
+        [StringLength(255)]
+        public string name { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? created_at { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? updated_at { get; set; }
 
-        [InverseProperty(nameof(card.artist))]
         public virtual ICollection<card> cards { get; set; }
     }
 }
