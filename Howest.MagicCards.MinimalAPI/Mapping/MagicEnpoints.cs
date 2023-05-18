@@ -17,7 +17,7 @@ public static class MagicEnpoints
 
         }).WithTags("Deck");
 
-        app.MapPost($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBodyAttribute] Card newcard) =>
+        app.MapPost($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBody] Card newcard) =>
             {
                 await deckRepo.AddToDeck(newcard ?? new Card { Mongo_id = ObjectId.GenerateNewId().ToString() });
                 return Results.Created($"{urlPrefix}/deck/{newcard?.Mongo_id ?? ObjectId.GenerateNewId().ToString()}", newcard);
@@ -30,6 +30,20 @@ public static class MagicEnpoints
                 return Results.Ok($"Card with id {id} is deleted!");
             }
         ).WithTags("Deck");
+        
+        app.MapPut($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBody] Card card) =>
+            {
+                await deckRepo.UpdateCardAsync(card);
+                return Results.Ok($"Card with id {card.Id} is updated!");
+            }
+        ).WithTags("Deck");
+        
+        // app.MapPatch($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBody] Card card) =>
+        //     {
+        //         await deckRepo.UpdateCardAsync(card);
+        //         return Results.Ok($"Card with id {card.Id} is updated!");
+        //     }
+        // ).WithTags("Deck");
     }
     
     public static void AddMagicServices(this IServiceCollection services, IConfiguration config)

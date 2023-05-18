@@ -32,4 +32,8 @@ public class MongoDeckRepository : IDeckRepository
         await _deckCollection.DeleteOneAsync(card => card.Id == id);
     }
     
+    public async Task UpdateCardAsync(Card card)
+    {
+        await _deckCollection.ReplaceOneAsync(c => c.Id == card.Id, card);
+    }
 }
