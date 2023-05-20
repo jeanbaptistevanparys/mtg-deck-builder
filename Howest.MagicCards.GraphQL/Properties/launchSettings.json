@@ -11,6 +11,7 @@
     "Howest.MagicCards.GraphQL": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "ui/playground",
       "applicationUrl": "https://localhost:7116;http://localhost:5116",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
