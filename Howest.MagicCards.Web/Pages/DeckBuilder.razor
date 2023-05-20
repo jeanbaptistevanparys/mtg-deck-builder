@@ -1,0 +1,72 @@
+﻿@page "/deckbuilder"
+
+
+<PageTitle>Build your deck!</PageTitle>
+
+<h1>Build your deck!</h1>
+
+
+<section class="cards">
+    <section id="cards-section">
+        <div id="cards-form">
+            <div>
+                <input type="text" id="card-name" placeholder="Card name" @bind="CardNameFilter"/>
+                <input type="text" id="card-text" placeholder="Card text" @bind="CardTextFilter"/>
+                <input type="text" id="card-type" placeholder="Card type" @bind="CardTypeFilter"/>
+                <input type="text" id="card-set" placeholder="Card set" @bind="CardSetFilter"/>
+                <input type="text" id="card-artist" placeholder="Card artist" @bind="CardArtistFilter"/>
+                <select id="card-rarity" @bind="CardRarityFilter">
+                    <option value="">Rarity filter</option>
+                    <option value="U">Uncommon</option>
+                    <option value="C">Common</option>
+                    <option value="R">Rare</option>
+                    <option value="M">Mythic</option>
+                    <option value="S">Special</option>
+                    <option value="B">Bonus</option>
+                </select>
+                <select id="card-order" @bind="CardOrderFilter">
+                    <option value="asc">ASC</option>
+                    <option value="desc">DESC</option>
+                </select>
+
+            </div>
+            <div>
+                <button @onclick="ShowPreviousPage" id="prev-page">Previous page</button>
+                <button @onclick="ShowNextPage"id="prev-page">Next page</button>
+                <button @onclick="LoadCards">Search</button>
+            </div>
+        </div>
+        <div id="cards-available">
+            @if (Cards == null)
+            {
+                <p>Loading</p>
+            }
+            else
+            {
+                @foreach (var card in Cards)
+                {
+                    <img src="@card.Original_Image_Url" @onclick="() => AddCardToDeck(card)"/>
+                }
+            }
+        </div>
+    </section>
+    <aside id="cards-selected-section">
+        <div>
+            <button @onclick="ClearDeck">Clear deck</button>
+        </div>
+        <section>
+            @if (Deck == null)
+            {
+                <p>click on a card to add it to your deck</p>
+            }
+            @else
+            {
+            @foreach (var card in Deck)
+            {
+                //todo: add remove card from deck
+                <p>  @card.Name , @card.Mana_Cost  </p>
+            }
+            }
+        </section>
+    </aside>
+</section>
