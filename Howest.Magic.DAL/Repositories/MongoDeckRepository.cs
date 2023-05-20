@@ -8,9 +8,10 @@ public class MongoDeckRepository : IDeckRepository
 {
     private readonly IMongoCollection<Card> _deckCollection;
 
-    public MongoDeckRepository(IOptions<MongoDBSettings> mongoDBSettings) {
-        MongoClient client = new MongoClient(mongoDBSettings.Value.ConnectionURI);
-        IMongoDatabase database = client.GetDatabase(mongoDBSettings.Value.DatabaseName);
+    public MongoDeckRepository(IOptions<MongoDBSettings> mongoDBSettings)
+    {
+        var client = new MongoClient(mongoDBSettings.Value.ConnectionURI);
+        var database = client.GetDatabase(mongoDBSettings.Value.DatabaseName);
         _deckCollection = database.GetCollection<Card>(mongoDBSettings.Value.CollectionName);
     }
 
@@ -28,7 +29,7 @@ public class MongoDeckRepository : IDeckRepository
     {
         await _deckCollection.DeleteOneAsync(card => card.Id == id);
     }
-    
+
     public async Task UpdateCardAsync(Card card)
     {
         await _deckCollection.ReplaceOneAsync(c => c.Id == card.Id, card);

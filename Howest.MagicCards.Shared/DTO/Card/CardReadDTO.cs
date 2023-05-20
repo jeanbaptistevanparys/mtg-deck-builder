@@ -3,15 +3,19 @@ namespace Howest.MagicCards.Shared.DTO;
 public class CardReadDTO
 {
     public long Id { get; init; }
+
     public string Name { get; init; }
+
     // public string ManaCost { get; init; }
     // public string ConvertedManaCost { get; init; }
     // public string Type { get; init; }
     public string rarity_code { get; init; }
+
     // public string SetCode { get; init; }
     // public string Text { get; init; }
     // public string Flavor { get; init; }
     public string ArtistId { get; init; }
+
     // public string Number { get; init; }
     // public string Power { get; init; }
     // public string Toughness { get; init; }

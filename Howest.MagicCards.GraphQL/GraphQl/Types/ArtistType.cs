@@ -12,5 +12,4 @@ public class ArtistType : ObjectGraphType<artist>
         Field(a => a.full_name, type: typeof(StringGraphType)).Description("name of the artist").Name("full_name");
         Field(a => a.cards, type: typeof(ListGraphType<CardType>));
     }
-    
 }

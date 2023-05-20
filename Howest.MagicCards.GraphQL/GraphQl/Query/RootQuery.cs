@@ -25,7 +25,7 @@ public class RootQuery : ObjectGraphType
                 var limit = context.GetArgument<int>("limit");
                 var power = context.GetArgument<string>("power");
                 var toughness = context.GetArgument<string>("toughness");
-                
+
                 var cards = await cardRepository.GetAllCards();
                 return cards
                     .Where(c =>
@@ -45,14 +45,14 @@ public class RootQuery : ObjectGraphType
                 new QueryArgument<StringGraphType> { Name = "id" },
                 new QueryArgument<IntGraphType> { Name = "limit" }
             },
-            resolve: async context =>
+            async context =>
             {
                 var limit = context.GetArgument<int>("limit");
                 var id = context.GetArgument<string>("id");
                 var artists = await artistRepository.GetAllArtists();
                 return artists
                     .Where(a =>
-                        (string.IsNullOrEmpty(id) || a.id.ToString() == id)
+                        string.IsNullOrEmpty(id) || a.id.ToString() == id
                     )
                     .Take(limit == default ? int.MaxValue : limit)
                     .ToList();

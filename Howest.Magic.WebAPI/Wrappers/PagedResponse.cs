@@ -15,6 +15,4 @@ public class PagedResponse<T> : Response<T>
     public int TotalRecords { get; set; }
 
     public int TotalPages => (int)Math.Ceiling(TotalRecords / (double)PageSize);
-
-    
 }

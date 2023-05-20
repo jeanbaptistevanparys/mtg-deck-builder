@@ -4,29 +4,25 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Howest.MagicCards.DAL.Models.sql
+namespace Howest.MagicCards.DAL.Models.sql;
+
+[Index(nameof(code), Name = "rarities_code_unique", IsUnique = true)]
+public class rarity
 {
-    [Index(nameof(code), Name = "rarities_code_unique", IsUnique = true)]
-    public partial class rarity
+    public rarity()
     {
-        public rarity()
-        {
-            cards = new HashSet<card>();
-        }
-
-        [Key]
-        public long id { get; set; }
-        [Required]
-        [StringLength(255)]
-        public string code { get; set; }
-        [Required]
-        [StringLength(255)]
-        public string name { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? created_at { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? updated_at { get; set; }
-
-        public virtual ICollection<card> cards { get; set; }
+        cards = new HashSet<card>();
     }
+
+    [Key] public long id { get; set; }
+
+    [Required] [StringLength(255)] public string code { get; set; }
+
+    [Required] [StringLength(255)] public string name { get; set; }
+
+    [Column(TypeName = "datetime")] public DateTime? created_at { get; set; }
+
+    [Column(TypeName = "datetime")] public DateTime? updated_at { get; set; }
+
+    public virtual ICollection<card> cards { get; set; }
 }

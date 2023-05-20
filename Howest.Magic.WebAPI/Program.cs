@@ -1,4 +1,3 @@
-using Howest.MagicCards.DAL.Models;
 using Howest.MagicCards.DAL.Models.sql;
 using Howest.MagicCards.DAL.Repositories;
 using Howest.MagicCards.Shared.Mappings;

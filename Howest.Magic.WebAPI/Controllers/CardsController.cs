@@ -13,7 +13,7 @@ namespace Howest.MagicCards.WebAPI.Controllers;
 [ApiVersion("1.5")]
 [ApiController]
 [Route("api/[controller]")]
-public class CardsController : ControllerBase 
+public class CardsController : ControllerBase
 {
     private readonly ICardRepository _cardRepo;
     private readonly IMapper _mapper;
@@ -26,69 +26,72 @@ public class CardsController : ControllerBase
     }
 
 
-    [HttpGet(), MapToApiVersion("1.1")]
+    [HttpGet]
+    [MapToApiVersion("1.1")]
     public async Task<ActionResult<IEnumerable<CardReadDTO>>> GetCards([FromQuery] CardFilter filter)
     {
-        
-        return (await _cardRepo.GetAllCards() is { } allCards)
+        return await _cardRepo.GetAllCards() is { } allCards
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
                     .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
                     .ToList(),
                 filter.PageNumber, filter.PageSize, allCards.Count()))
-            : NotFound(new Response<CardReadDTO>()
+            : NotFound(new Response<CardReadDTO>
             {
-                Errors = new string[] { "404" },
+                Errors = new[] { "404" },
                 Message = "No cards found "
             });
-
     }
-    
-    [HttpGet(), MapToApiVersion("1.5")]
-    public async Task<ActionResult<CardReadDTO>> GetCards([FromQuery] CardOrderFilter filter, [FromServices] IConfiguration config)
+
+    [HttpGet]
+    [MapToApiVersion("1.5")]
+    public async Task<ActionResult<CardReadDTO>> GetCards([FromQuery] CardOrderFilter filter,
+        [FromServices] IConfiguration config)
     {
         filter.MaxPageSize = int.Parse(config["maxPageSize"]);
-        
-        return (await _cardRepo.GetAllCards() is { } allCards)
+
+        return await _cardRepo.GetAllCards() is { } allCards
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
-                    .ToFilteredList(filter.Set, filter.Artist, filter.Rarity, filter.CardType, filter.CardName, filter.CardText)
+                    .ToFilteredList(filter.Set, filter.Artist, filter.Rarity, filter.CardType, filter.CardName,
+                        filter.CardText)
                     .Sort(filter.orderByQueryString)
                     .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
                     .ToList(),
                 filter.PageNumber, filter.PageSize, allCards.Count()))
-            : NotFound(new Response<CardReadDTO>()
+            : NotFound(new Response<CardReadDTO>
             {
-                Errors = new string[] { "404" },
+                Errors = new[] { "404" },
                 Message = "No cards found "
             });
     }
-    
-    
-    
-    [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.1")]
-    public async Task<ActionResult<CardReadDTO>>  GetCardbyId(long id)
+
+
+    [HttpGet("{id:long}", Name = "GetCardById")]
+    [MapToApiVersion("1.1")]
+    public async Task<ActionResult<CardReadDTO>> GetCardbyId(long id)
     {
-        return (await _cardRepo.GetCardById(id) is { } card)
+        return await _cardRepo.GetCardById(id) is { } card
             ? Ok(_mapper.Map<CardReadDTO>(card))
-            : NotFound(new Response<CardReadDTO>()
+            : NotFound(new Response<CardReadDTO>
             {
-                Errors = new string[] { "404" },
+                Errors = new[] { "404" },
                 Message = "No card found with id " + id
             });
     }
-    
-    [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.5")]
+
+    [HttpGet("{id:long}", Name = "GetCardById")]
+    [MapToApiVersion("1.5")]
     public async Task<ActionResult<CardReadDTO>> GetCardById(long id)
     {
-        return (await _cardRepo.GetCardById(id) is { } card)
+        return await _cardRepo.GetCardById(id) is { } card
             ? Ok(_mapper.Map<CardReadDetailDTO>(card))
-            : NotFound(new Response<CardReadDetailDTO>()
+            : NotFound(new Response<CardReadDetailDTO>
             {
-                Errors = new string[] { "404" },
+                Errors = new[] { "404" },
                 Message = "No card found with id " + id
             });
     }
-} 
+}
