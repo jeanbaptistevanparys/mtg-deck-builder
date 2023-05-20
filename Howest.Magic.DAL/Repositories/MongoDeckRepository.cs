@@ -1,8 +1,5 @@
 using Howest.MagicCards.DAL.Models.mongo;
 using Microsoft.Extensions.Options;
-
-using Microsoft.Extensions.Options;
-using Howest.MagicCards.DAL.Models.mongo;
 using MongoDB.Driver;
 
 namespace Howest.MagicCards.DAL.Repositories;
