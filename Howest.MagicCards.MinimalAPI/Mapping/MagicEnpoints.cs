@@ -11,41 +11,48 @@ public static class MagicEnpoints
     {
         app.MapGet($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo) =>
         {
-            return (await deckRepo.GetDeckAsync() is IEnumerable<Card> cards)
+            return await deckRepo.GetDeckAsync() is IEnumerable<Card> cards
                 ? Results.Ok(cards)
                 : Results.NotFound("No cards found");
-
         }).WithTags("Deck");
 
         app.MapPost($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBody] Card newcard) =>
             {
                 await deckRepo.AddToDeck(newcard ?? new Card { Mongo_id = ObjectId.GenerateNewId().ToString() });
-                return Results.Created($"{urlPrefix}/deck/{newcard?.Mongo_id ?? ObjectId.GenerateNewId().ToString()}", newcard);
+                return Results.Created($"{urlPrefix}/deck/{newcard?.Mongo_id ?? ObjectId.GenerateNewId().ToString()}",
+                    newcard);
             }
         ).WithTags("Deck");
 
-        app.MapDelete($"{urlPrefix}/deck/{{id}}", async (MongoDeckRepository deckRepo, long id) =>
+        app.MapDelete($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo) =>
             {
-                await deckRepo.DeleteFromDeckAsync(id);
-                return Results.Ok($"Card with id {id} is deleted!");
+                await deckRepo.DeleteAll();
+                return Results.Ok($"the deck is deleted!");
             }
         ).WithTags("Deck");
-        
+
         app.MapPut($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBody] Card card) =>
             {
-                await deckRepo.UpdateCardAsync(card);
-                return Results.Ok($"Card with id {card.Id} is updated!");
+                Card dbcard = await deckRepo.GetCard(card.Id);
+                if (dbcard is null)
+                {
+                    return Results.NotFound($"Card with id {card.Id} is not found!");
+                }
+                else
+                {
+                    dbcard.Amount += card.Amount;
+                    if (dbcard.Amount <= 0)
+                    {
+                        await deckRepo.DeleteFromDeckAsync(card.Id);
+                        return Results.Ok($"Card with id {card.Id} is deleted!");
+                    }
+                    await deckRepo.UpdateCardAsync(dbcard);
+                    return Results.Ok($"Card with id {card.Id} is updated!");
+                }
             }
         ).WithTags("Deck");
-        
-        // app.MapPatch($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBody] Card card) =>
-        //     {
-        //         await deckRepo.UpdateCardAsync(card);
-        //         return Results.Ok($"Card with id {card.Id} is updated!");
-        //     }
-        // ).WithTags("Deck");
     }
-    
+
     public static void AddMagicServices(this IServiceCollection services, IConfiguration config)
     {
         services.Configure<MongoDBSettings>(config);
