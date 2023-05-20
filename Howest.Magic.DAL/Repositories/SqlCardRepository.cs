@@ -22,7 +22,7 @@ public class SqlCardRepository : ICardRepository
             .Include(c => c.rarity_codeNavigation)
             .Include(c => c.set_codeNavigation)
             .OrderBy( c => c.id)
-            .Select(b => b);
+            .Select(c => c);
         return await Task.FromResult(allCards) ;
     }
     public Task<card> GetCardById(long id)

@@ -16,14 +16,15 @@ public class SqlArtistRepository : IArtistRepository
     
     public async Task<IQueryable<artist>> GetAllArtists()
     {
-        IQueryable<artist> allCards = _db.artists
-            .OrderBy( c => c.id)
-            .Select(b => b);
-        return await Task.FromResult(allCards) ;
+        IQueryable<artist> allArtists = _db.artists
+            .Include(a => a.cards)
+            .OrderBy( a => a.id)
+            .Select(a => a);
+        return await Task.FromResult(allArtists) ;
     }
     public Task<artist> GetArtistById(long id)
     {
         return _db.artists
-            .SingleOrDefaultAsync(c => c.id == id);
+            .SingleOrDefaultAsync(a => a.id == id);
     }
 }
