@@ -71,7 +71,7 @@ public class CardsController : ControllerBase
     [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.1")]
     public async Task<ActionResult<CardReadDTO>>  GetCardbyId(long id)
     {
-        return (await _cardRepo.GetCardByIdAsync(id) is { } card)
+        return (await _cardRepo.GetCardById(id) is { } card)
             ? Ok(_mapper.Map<CardReadDTO>(card))
             : NotFound(new Response<CardReadDTO>()
             {
@@ -83,7 +83,7 @@ public class CardsController : ControllerBase
     [HttpGet("{id:long}", Name = "GetCardById"), MapToApiVersion("1.5")]
     public async Task<ActionResult<CardReadDTO>> GetCardById(long id)
     {
-        return (await _cardRepo.GetCardByIdAsync(id) is { } card)
+        return (await _cardRepo.GetCardById(id) is { } card)
             ? Ok(_mapper.Map<CardReadDetailDTO>(card))
             : NotFound(new Response<CardReadDetailDTO>()
             {

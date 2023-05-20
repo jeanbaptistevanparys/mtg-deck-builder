@@ -18,11 +18,14 @@ public class SqlCardRepository : ICardRepository
     public async Task<IQueryable<card>> GetAllCards()
     {
         IQueryable<card> allCards = _db.cards
+            .Include(c => c.artist)
+            .Include(c => c.rarity_codeNavigation)
+            .Include(c => c.set_codeNavigation)
             .OrderBy( c => c.id)
             .Select(b => b);
         return await Task.FromResult(allCards) ;
     }
-    public Task<card> GetCardByIdAsync(long id)
+    public Task<card> GetCardById(long id)
     {
         return _db.cards
             .SingleOrDefaultAsync(c => c.id == id);
