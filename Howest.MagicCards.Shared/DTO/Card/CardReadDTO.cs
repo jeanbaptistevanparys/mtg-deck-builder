@@ -6,8 +6,8 @@ public class CardReadDTO
 
     public string Name { get; init; }
 
-    // public string ManaCost { get; init; }
-    // public string ConvertedManaCost { get; init; }
+    public string Mana_Cost { get; init; }
+    public string Converted_Mana_Cost { get; init; }
     // public string Type { get; init; }
     public string rarity_code { get; init; }
 
