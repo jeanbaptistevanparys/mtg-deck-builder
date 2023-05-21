@@ -19,6 +19,8 @@ public partial class DeckBuilder
     private string CardSetFilter = string.Empty;
     private string CardTextFilter = string.Empty;
     private string CardTypeFilter = string.Empty;
+    
+    private int deckamount;
 
     private int CurrentPage = 1;
 
@@ -65,6 +67,7 @@ public partial class DeckBuilder
     {
         var response = await _httpClientDecks.GetAsync("deck");
         if (response.IsSuccessStatusCode) Deck = await response.Content.ReadFromJsonAsync<IEnumerable<Card>>();
+        deckamount = Deck.Sum(c => c.Amount);
     }
 
     private async Task ClearDeck()
@@ -75,29 +78,30 @@ public partial class DeckBuilder
 
     private async Task AddCardToDeck(CardReadDTO card)
     {
-        if (Deck.Count(c => c.Id == card.Id) > 0)
+        if (deckamount <= 60)
         {
-            var amount = new Amount();
-            amount.amount = 1;
-            Console.WriteLine(JsonContent.Create(amount));
-            var response = await _httpClientDecks.PutAsync($"deck/{card.Id}", JsonContent.Create(amount));
-        }
-        else
-        {
-            var newCard = new Card();
-            newCard.Amount = 1;
-            newCard.Id = card.Id;
-            newCard.Name = card.Name;
-            newCard.Mana_Cost = card.Mana_Cost;
-            newCard.Converted_Mana_Cost = card.Converted_Mana_Cost;
-            newCard.Artist = card.Fullname;
-            newCard.Color = card.Color;
-            newCard.Text = card.Text;
-            var response = await _httpClientDecks.PostAsync("deck", JsonContent.Create(newCard));
-        }
+            if (Deck.Count(c => c.Id == card.Id) > 0)
+            {
+                var amount = new Amount();
+                amount.amount = 1;
+                var response = await _httpClientDecks.PutAsync($"deck/{card.Id}", JsonContent.Create(amount));
+            }
+            else
+            {
+                var newCard = new Card();
+                newCard.Amount = 1;
+                newCard.Id = card.Id;
+                newCard.Name = card.Name;
+                newCard.Mana_Cost = card.Mana_Cost;
+                newCard.Converted_Mana_Cost = card.Converted_Mana_Cost;
+                newCard.Artist = card.Fullname;
+                newCard.Color = card.Color;
+                newCard.Text = card.Text;
+                var response = await _httpClientDecks.PostAsync("deck", JsonContent.Create(newCard));
+            }
 
-        Console.WriteLine(Deck.Count(c => c.Id == card.Id) > 0);
-        await LoadDeck();
+            await LoadDeck();
+        }
     }
 
     private async Task RemoveCardFromDeck(long Id)
@@ -137,7 +141,7 @@ public partial class DeckBuilder
 
         filter += orderlist.Count == 0 || CardOrderFilter == string.Empty
             ? ""
-            : $"orderByQueryString={string.Join(",", orderlist) + ',' + CardOrderFilter}";
+            : $"orderByQueryString={string.Join(",", orderlist) + ' ' + CardOrderFilter}";
 
         return filter;
     }

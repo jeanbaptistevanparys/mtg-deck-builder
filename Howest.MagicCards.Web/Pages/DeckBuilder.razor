@@ -60,6 +60,7 @@
             }
             else
             {
+                <p> @deckamount / 60 </p>
                 @foreach (var card in Deck)
                 {
                     <p @onclick="() => RemoveCardFromDeck(card.Id)"> @card.Amount, @card.Name , @card.Mana_Cost </p>
