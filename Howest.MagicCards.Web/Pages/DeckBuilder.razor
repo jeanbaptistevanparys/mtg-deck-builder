@@ -25,7 +25,7 @@
                     <option value="B">Bonus</option>
                 </select>
                 <select id="card-order" @bind="CardOrderFilter">
-                    <option value="asc">ASC</option>
+                    <option value="asc" selected>ASC</option>
                     <option value="desc">DESC</option>
                 </select>
 
@@ -59,7 +59,7 @@
             {
                 <p>click on a card to add it to your deck</p>
             }
-            @else
+            else
             {
             @foreach (var card in Deck)
             {

@@ -44,7 +44,7 @@ builder.Services.AddApiVersioning(o =>
 {
     o.ReportApiVersions = true;
     o.AssumeDefaultVersionWhenUnspecified = true;
-    o.DefaultApiVersion = new ApiVersion(1, 0);
+    o.DefaultApiVersion = new ApiVersion(1, 5);
     o.ApiVersionReader = ApiVersionReader.Combine(
         new QueryStringApiVersionReader("version"));
 });
