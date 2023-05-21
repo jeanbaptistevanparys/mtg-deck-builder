@@ -18,6 +18,8 @@ public class SqlCardRepository : ICardRepository
             .Include(c => c.artist)
             .Include(c => c.rarity_codeNavigation)
             .Include(c => c.set_codeNavigation)
+            .Include(c => c.card_colors)
+                .ThenInclude(c => c.color )
             .OrderBy(c => c.id)
             .Select(c => c);
         return await Task.FromResult(allCards);

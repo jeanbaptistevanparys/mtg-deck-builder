@@ -23,4 +23,6 @@ public class CardReadDetailDTO
     public string Original_Type { get; init; }
     public string Mtg_Id { get; init; }
     public string Variations { get; init; }
+    public string Color { get; init; }
+    public string Fullname { get; init; }
 }
