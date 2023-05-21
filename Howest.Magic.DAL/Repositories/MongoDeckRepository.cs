@@ -39,7 +39,6 @@ public class MongoDeckRepository : IDeckRepository
     {
         await _deckCollection.UpdateOneAsync(c => c.Id == card.Id,
             Builders<Card>.Update.Set("amount", card.Amount));
-        //test
     }
 
     public async Task DeleteAll()
