@@ -61,11 +61,10 @@
             }
             else
             {
-            @foreach (var card in Deck)
-            {
-                //todo: add remove card from deck
-                <p>  @card.Name , @card.Mana_Cost  </p>
-            }
+                @foreach (var card in Deck)
+                {
+                    <p @onclick="() => RemoveCardFromDeck(card.Id)"> @card.Amount, @card.Name , @card.Mana_Cost </p>
+                }
             }
         </section>
     </aside>

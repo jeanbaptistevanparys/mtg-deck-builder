@@ -19,7 +19,7 @@ public class MongoDeckRepository : IDeckRepository
     {
         return await _deckCollection.Find(card => true).ToListAsync();
     }
-    
+
     public async Task<Card> GetCard(long id)
     {
         return await _deckCollection.Find(card => card.Id == id).FirstOrDefaultAsync();
@@ -41,7 +41,7 @@ public class MongoDeckRepository : IDeckRepository
             Builders<Card>.Update.Set("amount", card.Amount));
         //test
     }
-    
+
     public async Task DeleteAll()
     {
         await _deckCollection.DeleteManyAsync(card => true);

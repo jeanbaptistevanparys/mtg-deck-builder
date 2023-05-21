@@ -18,7 +18,8 @@ public static class MagicEnpoints
 
         app.MapPost($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBody] Card newcard) =>
             {
-                await deckRepo.AddToDeck(newcard ?? new Card { Mongo_id = ObjectId.GenerateNewId().ToString() });
+                newcard.Mongo_id = ObjectId.GenerateNewId().ToString();
+                await deckRepo.AddToDeck(newcard);
                 return Results.Created($"{urlPrefix}/deck/{newcard?.Mongo_id ?? ObjectId.GenerateNewId().ToString()}",
                     newcard);
             }
@@ -27,28 +28,28 @@ public static class MagicEnpoints
         app.MapDelete($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo) =>
             {
                 await deckRepo.DeleteAll();
-                return Results.Ok($"the deck is deleted!");
+                return Results.Ok("the deck is deleted!");
             }
         ).WithTags("Deck");
 
-        app.MapPut($"{urlPrefix}/deck", async (MongoDeckRepository deckRepo, [FromBody] Card card) =>
+        app.MapPut($"{urlPrefix}/deck/" + "{id}",
+            async (long id, MongoDeckRepository deckRepo, [FromBody] Amount amount) =>
             {
-                Card dbcard = await deckRepo.GetCard(card.Id);
+                var dbcard = await deckRepo.GetCard(id);
                 if (dbcard is null)
                 {
-                    return Results.NotFound($"Card with id {card.Id} is not found!");
+                    return Results.NotFound($"Card with id {id} is not found!");
                 }
-                else
+
+                dbcard.Amount += amount.amount;
+                if (dbcard.Amount <= 0)
                 {
-                    dbcard.Amount += card.Amount;
-                    if (dbcard.Amount <= 0)
-                    {
-                        await deckRepo.DeleteFromDeckAsync(card.Id);
-                        return Results.Ok($"Card with id {card.Id} is deleted!");
-                    }
-                    await deckRepo.UpdateCardAsync(dbcard);
-                    return Results.Ok($"Card with id {card.Id} is updated!");
+                    await deckRepo.DeleteFromDeckAsync(id);
+                    return Results.Ok($"Card with id {id} is deleted!");
                 }
+
+                await deckRepo.UpdateCardAsync(dbcard);
+                return Results.Ok($"Card with id {id} is updated!");
             }
         ).WithTags("Deck");
     }

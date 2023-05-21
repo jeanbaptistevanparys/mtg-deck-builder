@@ -1,5 +1,3 @@
-using Howest.MagicCards.DAL.Models.sql;
-
 namespace Howest.MagicCards.Shared.DTO;
 
 public class CardReadDTO
@@ -14,5 +12,4 @@ public class CardReadDTO
     public string Artist { get; init; }
     public string Original_Image_Url { get; init; }
     public string Color { get; init; }
-    
 }

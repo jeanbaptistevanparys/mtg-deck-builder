@@ -19,7 +19,7 @@ public class SqlCardRepository : ICardRepository
             .Include(c => c.rarity_codeNavigation)
             .Include(c => c.set_codeNavigation)
             .Include(c => c.card_colors)
-                .ThenInclude(c => c.color )
+            .ThenInclude(c => c.color)
             .OrderBy(c => c.id)
             .Select(c => c);
         return await Task.FromResult(allCards);
@@ -28,6 +28,11 @@ public class SqlCardRepository : ICardRepository
     public Task<card> GetCardById(long id)
     {
         return _db.cards
+            .Include(c => c.artist)
+            .Include(c => c.rarity_codeNavigation)
+            .Include(c => c.set_codeNavigation)
+            .Include(c => c.card_colors)
+            .ThenInclude(c => c.color)
             .SingleOrDefaultAsync(c => c.id == id);
     }
 }

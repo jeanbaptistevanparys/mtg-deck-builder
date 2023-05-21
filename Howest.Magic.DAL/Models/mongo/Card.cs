@@ -9,7 +9,7 @@ public class Card
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Mongo_id { get; set; }
-    
+
     [BsonElement("amount")]
     [JsonPropertyName("amount")]
     public int Amount { get; set; }
@@ -21,11 +21,11 @@ public class Card
     [BsonElement("name")]
     [JsonPropertyName("name")]
     public string Name { get; set; } = null!;
-    
+
     [BsonElement("mana_cost")]
     [JsonPropertyName("mana_cost")]
     public string Mana_Cost { get; set; } = null!;
-    
+
     [BsonElement("converted_mana_cost")]
     [JsonPropertyName("converted_mana_cost")]
     public string Converted_Mana_Cost { get; set; } = null!;
