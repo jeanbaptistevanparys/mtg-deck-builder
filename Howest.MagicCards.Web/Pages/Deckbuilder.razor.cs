@@ -85,7 +85,6 @@ public partial class DeckBuilder
         else
         {
             var newCard = new Card();
-            newCard.Mongo_id = "";
             newCard.Amount = 1;
             newCard.Id = card.Id;
             newCard.Name = card.Name;

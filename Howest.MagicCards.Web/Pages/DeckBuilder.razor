@@ -1,14 +1,13 @@
 ﻿@page "/deckbuilder"
 
-
 <PageTitle>Build your deck!</PageTitle>
 
 <h1>Build your deck!</h1>
 
 
-<section class="cards">
-    <section id="cards-section">
-        <div id="cards-form">
+<section class="cards .d-flex .flex-row w-100">
+    <section class="w-75">
+        <div>
             <div>
                 <input type="text" id="card-name" placeholder="Card name" @bind="CardNameFilter"/>
                 <input type="text" id="card-text" placeholder="Card text" @bind="CardTextFilter"/>
@@ -36,7 +35,7 @@
                 <button @onclick="LoadCards">Search</button>
             </div>
         </div>
-        <div id="cards-available">
+        <div>
             @if (Cards == null)
             {
                 <p>Loading</p>
@@ -50,12 +49,12 @@
             }
         </div>
     </section>
-    <aside id="cards-selected-section">
+    <aside class="w-25" >
         <div>
             <button @onclick="ClearDeck">Clear deck</button>
         </div>
         <section>
-            @if (Deck == null)
+            @if (Deck == default)
             {
                 <p>click on a card to add it to your deck</p>
             }
