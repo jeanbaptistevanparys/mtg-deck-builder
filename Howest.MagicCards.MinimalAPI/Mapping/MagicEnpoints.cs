@@ -36,10 +36,7 @@ public static class MagicEnpoints
             async (long id, MongoDeckRepository deckRepo, [FromBody] Amount amount) =>
             {
                 var dbcard = await deckRepo.GetCard(id);
-                if (dbcard is null)
-                {
-                    return Results.NotFound($"Card with id {id} is not found!");
-                }
+                if (dbcard is null) return Results.NotFound($"Card with id {id} is not found!");
 
                 dbcard.Amount += amount.amount;
                 if (dbcard.Amount <= 0)

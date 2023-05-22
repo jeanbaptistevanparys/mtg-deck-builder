@@ -41,4 +41,8 @@ public class Card
     [BsonElement("text")]
     [JsonPropertyName("text")]
     public string Text { get; set; } = null!;
+
+    [BsonElement("image")]
+    [JsonPropertyName("image")]
+    public string Image { get; set; } = null;
 }

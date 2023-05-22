@@ -5,10 +5,10 @@
 <h1>Build your deck!</h1>
 
 
-<section class="cards .d-flex .flex-row w-100">
+<section class="d-flex flex-row w-100">
     <section class="w-75">
         <div>
-            <div>
+            <div class="w-75">
                 <input type="text" id="card-name" placeholder="Card name" @bind="CardNameFilter"/>
                 <input type="text" id="card-text" placeholder="Card text" @bind="CardTextFilter"/>
                 <input type="text" id="card-type" placeholder="Card type" @bind="CardTypeFilter"/>
@@ -35,8 +35,8 @@
                 <button @onclick="LoadCards">Search</button>
             </div>
         </div>
-        <div>
-            @if (Cards == null)
+        <div class="d-flex flex-row flex-wrap">
+            @if (Cards == default)
             {
                 <p>Loading</p>
             }
@@ -44,26 +44,33 @@
             {
                 @foreach (var card in Cards)
                 {
-                    <img src="@card.Original_Image_Url" @onclick="() => AddCardToDeck(card)"/>
+                    <div @onclick="() => AddCardToDeck(card)" class="h-50" style="width: 33%; cursor: pointer">
+                        <img alt="@card.Name" class="w-100 h-100" src="@card.Original_Image_Url"/>
+                    </div>
                 }
             }
         </div>
     </section>
-    <aside class="w-25" >
-        <div>
-            <button @onclick="ClearDeck">Clear deck</button>
+    <aside class="w-25">
+        <div class="w-100">
+            <button class="mx-auto w-50" @onclick="ClearDeck">Clear deck</button>
         </div>
-        <section>
-            @if (Deck == default)
+        <section class="d-flex flex-column w-100 align-items-center">
+            @if (!Deck.Any())
             {
                 <p>click on a card to add it to your deck</p>
             }
             else
             {
-                <p> @deckamount / 60 </p>
+                <p > @deckamount / 60 </p>
                 @foreach (var card in Deck)
                 {
-                    <p @onclick="() => RemoveCardFromDeck(card.Id)"> @card.Amount, @card.Name , @card.Mana_Cost </p>
+                    <div @onclick="() => RemoveCardFromDeck(card.Id)" class="w-100 d-flex flex-row align-items-center justify-content-center" style=" cursor: pointer">
+                        <span class="rounded-pill p-1 w-25 text-center" style="background-color: @GetCollors(card.Color)[0]; color:@GetCollors(card.Color)[1];">@card.Amount</span>
+                        <div class="w-50">
+                            <img alt="@card.Name" class="w-100 h-100" src="@card.Image"/>
+                        </div>
+                    </div>
                 }
             }
         </section>

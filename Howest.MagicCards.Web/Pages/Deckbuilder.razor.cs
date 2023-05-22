@@ -19,12 +19,12 @@ public partial class DeckBuilder
     private string CardSetFilter = string.Empty;
     private string CardTextFilter = string.Empty;
     private string CardTypeFilter = string.Empty;
-    
-    private int deckamount;
 
     private int CurrentPage = 1;
 
-    private IEnumerable<Card> Deck;
+    private IEnumerable<Card> Deck = new List<Card>(150);
+
+    private int deckamount;
 
     [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
 
@@ -78,7 +78,8 @@ public partial class DeckBuilder
 
     private async Task AddCardToDeck(CardReadDTO card)
     {
-        if (deckamount <= 60)
+        Console.WriteLine(card.Text);
+        if (deckamount < 60)
         {
             if (Deck.Count(c => c.Id == card.Id) > 0)
             {
@@ -97,6 +98,7 @@ public partial class DeckBuilder
                 newCard.Artist = card.Fullname;
                 newCard.Color = card.Color;
                 newCard.Text = card.Text;
+                newCard.Image = card.Original_Image_Url;
                 var response = await _httpClientDecks.PostAsync("deck", JsonContent.Create(newCard));
             }
 
@@ -131,7 +133,6 @@ public partial class DeckBuilder
         filter += filterlist.Count == 0 ? "" : "?";
         if (filterlist.Count > 0) filter += string.Join("&", filterlist);
 
-
         if (CardSetFilter != string.Empty) orderlist.Add("Set");
         if (CardArtistFilter != string.Empty) orderlist.Add("artist");
         if (CardRarityFilter != string.Empty) orderlist.Add("rarity");
@@ -141,8 +142,29 @@ public partial class DeckBuilder
 
         filter += orderlist.Count == 0 || CardOrderFilter == string.Empty
             ? ""
-            : $"orderByQueryString={string.Join(",", orderlist) + ' ' + CardOrderFilter}";
+            : $"&orderByQueryString={string.Join(",", orderlist) + ",id%20" + CardOrderFilter}";
 
         return filter;
+    }
+
+    public string[] GetCollors(string color)
+    {
+        switch (color)
+        {
+            case "White":
+                return new[] { "lightgray", "white" };
+            case "Black":
+                return new[] { "black", "white" };
+            case "Colorless":
+                return new[] { "black", "white" };
+            case "Green":
+                return new[] { "green", "white" };
+            case "Blue":
+                return new[] { "blue", "white" };
+            case "Red":
+                return new[] { "red", "white" };
+            default:
+                return new[] { "gray", "white" };
+        }
     }
 }
