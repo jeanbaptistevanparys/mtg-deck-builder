@@ -36,6 +36,8 @@ public class CardsController : ControllerBase
         return await _cardRepo.GetAllCards() is { } allCards
             ? Ok(new PagedResponse<IEnumerable<CardReadDTO>>(
                 allCards
+                    .ToFilteredList(filter.Set, filter.Artist, filter.Rarity, filter.CardType, filter.CardName,
+                        filter.CardText)
                     .ToPagedList(filter.PageNumber, filter.PageSize)
                     .ProjectTo<CardReadDTO>(_mapper.ConfigurationProvider)
                     .ToList(),
