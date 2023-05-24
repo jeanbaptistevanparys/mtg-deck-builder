@@ -66,8 +66,8 @@
                 <p > @deckamount / 60 </p>
                 @foreach (var card in Deck)
                 {
-                    <div  class="w-100 d-flex flex-row align-items-center justify-content-center" style=" cursor: pointer">
-                        <span @onclick="() => AddCardToDeck(new CardReadDTO(){Id = card.Id})" class="rounded-pill p-1 w-25 text-center" style="background-color: @GetCollors(card.Color)[0]; color:@GetCollors(card.Color)[1];">@card.Amount</span>
+                    <div class="w-100 d-flex flex-row align-items-center justify-content-center" style=" cursor: pointer">
+                        <span @onclick="() => AddCardToDeck(new CardReadDTO { Id = card.Id })" class="rounded-pill p-1 w-25 text-center" style="background-color: @GetCollors(card.Color)[0]; color:@GetCollors(card.Color)[1];">@card.Amount</span>
                         <div @onclick="() => RemoveCardFromDeck(card.Id)" class="w-50">
                             <img alt="@card.Name" class="w-100 h-100" src="@card.Image"/>
                         </div>

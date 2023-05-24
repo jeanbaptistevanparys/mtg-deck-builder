@@ -16,9 +16,9 @@ namespace Howest.MagicCards.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class CardsController : ControllerBase
 {
+    private readonly IMemoryCache _cache;
     private readonly ICardRepository _cardRepo;
     private readonly IMapper _mapper;
-    private readonly IMemoryCache _cache;
 
 
     public CardsController(ICardRepository cardRepository, IMapper mapper, IMemoryCache cache)
@@ -89,7 +89,7 @@ public class CardsController : ControllerBase
     [MapToApiVersion("1.5")]
     public async Task<ActionResult<CardReadDetailDTO>> GetCardById(long id)
     {
-        if (!_cache.TryGetValue(id.ToString(), out ActionResult cachedResult))
+        if (!_cache.TryGetValue(id, out ActionResult cachedResult))
         {
             cachedResult = await _cardRepo.GetCardById(id) is { } card
                 ? Ok(_mapper.Map<CardReadDTO>(card))
@@ -98,8 +98,8 @@ public class CardsController : ControllerBase
                     Errors = new[] { "404" },
                     Message = "No card found with id " + id
                 });
-            
-            MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
+
+            var cacheOptions = new MemoryCacheEntryOptions
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(100)
             };
