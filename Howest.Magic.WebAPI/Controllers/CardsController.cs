@@ -6,6 +6,7 @@ using Howest.MagicCards.Shared.Extensions;
 using Howest.MagicCards.Shared.Filters;
 using Howest.MagicCards.WebAPI.Wrappers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Howest.MagicCards.WebAPI.Controllers;
 
@@ -17,12 +18,14 @@ public class CardsController : ControllerBase
 {
     private readonly ICardRepository _cardRepo;
     private readonly IMapper _mapper;
+    private readonly IMemoryCache _cache;
 
 
-    public CardsController(ICardRepository cardRepository, IMapper mapper)
+    public CardsController(ICardRepository cardRepository, IMapper mapper, IMemoryCache cache)
     {
         _cardRepo = cardRepository;
         _mapper = mapper;
+        _cache = cache;
     }
 
 
@@ -84,14 +87,26 @@ public class CardsController : ControllerBase
 
     [HttpGet("{id:long}", Name = "GetCardById")]
     [MapToApiVersion("1.5")]
-    public async Task<ActionResult<CardReadDTO>> GetCardById(long id)
+    public async Task<ActionResult<CardReadDetailDTO>> GetCardById(long id)
     {
-        return await _cardRepo.GetCardById(id) is { } card
-            ? Ok(_mapper.Map<CardReadDetailDTO>(card))
-            : NotFound(new Response<CardReadDetailDTO>
+        if (!_cache.TryGetValue(id.ToString(), out ActionResult cachedResult))
+        {
+            cachedResult = await _cardRepo.GetCardById(id) is { } card
+                ? Ok(_mapper.Map<CardReadDTO>(card))
+                : NotFound(new Response<CardReadDTO>
+                {
+                    Errors = new[] { "404" },
+                    Message = "No card found with id " + id
+                });
+            
+            MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
             {
-                Errors = new[] { "404" },
-                Message = "No card found with id " + id
-            });
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(100)
+            };
+
+            _cache.Set(id, cachedResult, cacheOptions);
+        }
+
+        return cachedResult;
     }
 }
