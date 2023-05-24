@@ -20,6 +20,7 @@ public class SqlCardRepository : ICardRepository
             .Include(c => c.set_codeNavigation)
             .Include(c => c.card_colors)
             .ThenInclude(c => c.color)
+            .Where(c => c.original_image_url != null)
             .OrderBy(c => c.id)
             .Select(c => c);
         return await Task.FromResult(allCards);
