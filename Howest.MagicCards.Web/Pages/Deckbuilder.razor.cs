@@ -54,12 +54,10 @@ public partial class DeckBuilder
     private async Task LoadCards()
     {
         var response = await _httpClient.GetAsync(Filter());
-        Console.WriteLine(Filter());
         if (response.IsSuccessStatusCode)
         {
             var res = await response.Content.ReadFromJsonAsync<PagedResponse<IEnumerable<CardReadDTO>>>();
             Cards = res.Data;
-            Console.WriteLine(res.Data.Count());
         }
     }
 
@@ -78,7 +76,6 @@ public partial class DeckBuilder
 
     private async Task AddCardToDeck(CardReadDTO card)
     {
-        Console.WriteLine(card.Text);
         if (deckamount < 60)
         {
             if (Deck.Count(c => c.Id == card.Id) > 0)
@@ -110,7 +107,6 @@ public partial class DeckBuilder
     {
         var amount = new Amount();
         amount.amount = -1;
-        Console.WriteLine(JsonContent.Create(amount).ToString());
         var response = await _httpClientDecks.PutAsync($"deck/{Id}", JsonContent.Create(amount));
         if (response.IsSuccessStatusCode) await LoadDeck();
     }
